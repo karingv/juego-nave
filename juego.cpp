@@ -8,12 +8,25 @@
 using namespace std;
 using namespace miniwin;
 
+const int WIDTH = 800;
+const int HEIGHT = 600;
+
+const int ENEMY_UPDATE = 50;
+const int ENEMY_SPEED = 2;
+const int ENEMY_SIZE = 20;
+
+const int SHIP_SPEED = 20;
+const int SHIP_SIZE = 50;
+
+const int BULLET_SPEED = 10;
+const int BULLET_SIZE = 5;
+
 class Bala
 {
 private:
     int x, y;
-    int tam = 5;
-    int velocidad = 10;
+    int tam = BULLET_SIZE;
+    int velocidad = BULLET_SPEED;
 
 public:
     Bala(int _x, int _y) : x(_x), y(_y) {}
@@ -39,7 +52,7 @@ class Enemigo
 {
 private:
     int x, y;
-    int tam = 20;
+    int tam = ENEMY_SIZE;
     bool activo = true;
 
 public:
@@ -56,8 +69,8 @@ public:
 
     void mueve()
     {
-        y += 2; // Mover hacia abajo
-        if (y > 600 + tam)
+        y += ENEMY_SPEED; // Mover hacia abajo
+        if (y > HEIGHT + tam)
         {                   // Suponiendo una altura de ventana de 600
             activo = false; // Desactivar si sale de la pantalla
         }
@@ -83,7 +96,7 @@ class Nave
 {
 private:
     int x, y;
-    int tam = 50;
+    int tam = SHIP_SIZE;
     vector<Bala> balas;
 
 public:
@@ -104,8 +117,8 @@ public:
         // x += dx;
         // y += dy;
         // Limitar movimiento a la ventana
-        x = max(tam / 2, min(800 - tam / 2, x + dx));
-        y = max(tam / 2, min(600 - tam / 2, y + dy));
+        x = max(tam / 2, min(WIDTH - tam / 2, x + dx));
+        y = max(tam / 2, min(HEIGHT - tam / 2, y + dy));
     }
 
     void dispara()
@@ -134,7 +147,7 @@ public:
 int main()
 {
     srand(time(0)); // Inicializar semilla aleatoria
-    vredimensiona(800, 600);
+    vredimensiona(WIDTH, HEIGHT);
     Nave miNave(300, 550);
     vector<Enemigo> enemigos;
 
@@ -142,9 +155,9 @@ int main()
     bool fin = false;
     while (!fin)
     {
-        if (++contador % 50 == 0)
-        {                                                 // Añadir un enemigo cada 100 ciclos
-            enemigos.push_back(Enemigo(rand() % 800, 0)); // Posición x aleatoria, y en 0
+        if (++contador % ENEMY_UPDATE == 0)
+        {
+            enemigos.push_back(Enemigo(rand() % WIDTH, 0));
         }
 
         borra();
@@ -172,10 +185,10 @@ int main()
         switch (t)
         {
         case DERECHA:
-            miNave.mueve(20, 0);
+            miNave.mueve(SHIP_SPEED, 0);
             break;
         case IZQUIERDA:
-            miNave.mueve(-20, 0);
+            miNave.mueve(-SHIP_SPEED, 0);
             break;
         case ARRIBA:
             miNave.dispara();
