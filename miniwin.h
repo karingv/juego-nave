@@ -45,6 +45,10 @@ void punto(float x, float y);
 void linea(float x_ini, float y_ini, float x_fin, float y_fin);
 void rectangulo(float izq, float arr, float der, float aba);
 void rectangulo_lleno(float izq, float arr, float der, float aba);
+//Metodo para dibujar la nave
+void dibujar_nave(float x, float y, float longitud, float anchura);
+//Metodo para dibujar enemigo
+void dibujar_enemigo_alien(float x, float y, float longitud_cuerpo, float altura_cuerpo, float longitud_antena, float altura_antena);
 void circulo(float x_cen, float y_cen, float radio);
 void circulo_lleno(float x_cen, float y_cen, float radio);
 void texto(float x, float y, const std::string& texto);

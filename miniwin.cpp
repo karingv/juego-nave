@@ -426,6 +426,117 @@ void rectangulo_lleno(float izq, float arr, float der, float aba) {
    DeleteObject(hBrush);
 }
 
+//Método para dibujar nave
+void dibujar_nave(float x, float y, float longitud, float altura) {
+    // Coordenadas del cuerpo de la nave
+    float izq = x - longitud / 2;
+    float der = x + longitud / 2;
+    float arr = y - altura / 2;
+    float aba = y + altura / 2;
+
+    // Dibujar cuerpo de la nave
+    rectangulo_lleno(izq, arr, der, aba);
+
+    // Coordenadas de la ojiva arriba
+    float ojiva_izq = x - longitud / 4;
+    float ojiva_der = x + longitud / 4;
+    float ojiva_arr = y - altura / 2 - altura / 2;
+    float ojiva_aba = y - altura / 2;
+    rectangulo_lleno(ojiva_izq, ojiva_arr, ojiva_der, ojiva_aba);
+    
+    // Coordenadas de la ojiva abajo
+    float ojiva_izq_a = x - longitud / 4;
+    float ojiva_der_a = x + longitud / 4;
+    float ojiva_arr_a = y + altura / 2;
+    float ojiva_aba_a = y + altura / 2 + altura / 4;
+    rectangulo_lleno(ojiva_izq_a, ojiva_arr_a, ojiva_der_a, ojiva_aba_a);
+    
+    // Coordenadas de la ala izquierda
+    float izq_i = x - longitud / 2 - longitud / 2;
+    float der_i = x - longitud / 4;
+    float arr_i = y - altura / 3;
+    float aba_i = y + altura / 3;
+    rectangulo_lleno(izq_i, arr_i, der_i, aba_i);
+
+    // Coordenadas de la ala derecha
+    float izq_d = x + longitud / 4;
+    float der_d = x + longitud / 2 + longitud / 2;
+    float arr_d = y - altura / 3;
+    float aba_d = y + altura / 3;
+    rectangulo_lleno(izq_d, arr_d, der_d, aba_d);
+    
+    // Coordenadas de la ojiva de la ala izquierda
+    float ojiva_izq_io = x - longitud / 4 - longitud / 2;
+    float ojiva_der_io = x - longitud / 3.5 - longitud / 3.5;
+    float ojiva_arr_io = y - altura / 3.5 - altura / 3.5;
+    float ojiva_aba_io = y - altura / 4;
+    rectangulo_lleno(ojiva_izq_io, ojiva_arr_io, ojiva_der_io, ojiva_aba_io);
+    
+    // Coordenadas de la ojiva de la ala derecha
+    float ojiva_izq_od = x + longitud / 3.5 + longitud / 3.5;
+    float ojiva_der_od = x + longitud / 4 + longitud / 2;
+    float ojiva_arr_od = y - altura / 3.5 - altura / 3.5;
+    float ojiva_aba_od = y - altura / 4;
+    rectangulo_lleno(ojiva_izq_od, ojiva_arr_od, ojiva_der_od, ojiva_aba_od);
+ 
+}
+
+//Metodo para dibujar enemigo 
+void dibujar_enemigo_alien(float x, float y, float longitud_cuerpo, float altura_cuerpo, float longitud_antena, float altura_antena) {
+    // Coordenadas del cuerpo del alienígena
+    float cuerpo_izq = x - longitud_cuerpo / 2;
+    float cuerpo_der = x + longitud_cuerpo / 2;
+    float cuerpo_arr = y - altura_cuerpo / 2;
+    float cuerpo_aba = y + altura_cuerpo / 2;
+
+    // Dibujar cuerpo del alienígena
+    rectangulo_lleno(cuerpo_izq, cuerpo_arr, cuerpo_der, cuerpo_aba);
+
+    // Coordenadas de la antena izquierda
+    float antena_izq_1_izq = x - longitud_antena / 2 - longitud_cuerpo / 4;
+    float antena_izq_1_der = x + longitud_antena / 2 - longitud_cuerpo / 4;
+    float antena_izq_1_arr = cuerpo_arr - altura_antena;
+    float antena_izq_1_aba = cuerpo_arr;
+
+    // Dibujar antena izquierda
+    rectangulo_lleno(antena_izq_1_izq, antena_izq_1_arr, antena_izq_1_der, antena_izq_1_aba);
+    
+    // Coordenadas de las antena derecha
+    float antena_der_izq = x - longitud_antena / 2 + longitud_cuerpo / 4;
+    float antena_der_der = x + longitud_antena / 2 + longitud_cuerpo / 4;
+    float antena_der_arr = cuerpo_arr - altura_antena;
+    float antena_der_aba = cuerpo_arr;
+
+    // Dibujar antena derecha
+    rectangulo_lleno(antena_der_izq, antena_der_arr, antena_der_der, antena_der_aba);
+    
+	// Coordenadas de la ojiva abajo
+    float ojiva_izq_alien = x - longitud_cuerpo / 4;
+    float ojiva_der_alien = x + longitud_cuerpo / 4;
+    float ojiva_arr_alien = y + altura_cuerpo / 2;
+    float ojiva_aba_alien = y + altura_cuerpo / 4 + altura_cuerpo / 2;
+    rectangulo_lleno(ojiva_izq_alien, ojiva_arr_alien, ojiva_der_alien, ojiva_aba_alien);
+    
+    // Coordenadas de la ala izquierda
+    float izq_i = x - longitud_cuerpo / 4 - longitud_cuerpo / 2;
+    float der_i = x - longitud_cuerpo / 4;
+    float arr_i = y - altura_cuerpo / 3;
+    float aba_i = y + altura_cuerpo / 3;
+    rectangulo_lleno(izq_i, arr_i, der_i, aba_i);
+
+    // Coordenadas de la ala derecha
+    float izq_d = x + longitud_cuerpo / 4;
+    float der_d = x + longitud_cuerpo / 4 + longitud_cuerpo / 2;
+    float arr_d = y - altura_cuerpo / 3;
+    float aba_d = y + altura_cuerpo / 3;
+    rectangulo_lleno(izq_d, arr_d, der_d, aba_d);
+}
+
+
+
+
+
+
 inline void _circ(float x_cen, float y_cen, float radio) {
    BeginPath(hDCMem);
    Arc(hDCMem, int(x_cen - radio), int(y_cen - radio),

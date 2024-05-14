@@ -62,8 +62,8 @@ public:
     {
         if (activo)
         {
-            color(ROJO);
-            rectangulo_lleno(x - tam / 2, y - tam / 2, x + tam / 2, y + tam / 2);
+            color(VERDE);
+            dibujar_enemigo_alien(x, y, tam, tam, 4, 4);
         }
     }
 
@@ -105,7 +105,7 @@ public:
     void dibuja() const
     {
         color(BLANCO);
-        rectangulo_lleno(x - tam / 2, y - tam / 2, x + tam / 2, y + tam / 2);
+        dibujar_nave(x, y, tam, tam);
         for (size_t i = 0; i < balas.size(); ++i)
         {
             balas[i].dibuja();
