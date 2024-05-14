@@ -425,6 +425,23 @@ void rectangulo_lleno(float izq, float arr, float der, float aba) {
    SelectObject(hDCMem, orig);
    DeleteObject(hBrush);
 }
+//Metodo para dibujar marco
+void dibujar_marco(int WIDTH, int HEIGHT, int margen, int espacio_superior) {
+    // Coordenadas para el marco
+    int x_ini = margen;
+    int y_ini = margen + espacio_superior; // Ajuste para dejar espacio superior
+    int x_fin = WIDTH - margen;
+    int y_fin = HEIGHT - margen;
+
+    // Dibujar el marco
+    color(BLANCO);
+    // Líneas del marco
+    rectangulo_lleno(x_ini, y_ini, x_fin, y_ini + 2); // Línea superior
+    rectangulo_lleno(x_ini, y_fin - 2, x_fin, y_fin); // Línea inferior
+    rectangulo_lleno(x_ini, y_ini, x_ini + 2, y_fin); // Línea izquierda
+    rectangulo_lleno(x_fin - 2, y_ini, x_fin, y_fin); // Línea derecha
+}
+
 
 //Método para dibujar nave
 void dibujar_nave(float x, float y, float longitud, float altura) {

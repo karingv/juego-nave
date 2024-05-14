@@ -45,6 +45,8 @@ void punto(float x, float y);
 void linea(float x_ini, float y_ini, float x_fin, float y_fin);
 void rectangulo(float izq, float arr, float der, float aba);
 void rectangulo_lleno(float izq, float arr, float der, float aba);
+//Metodo para dibujar marco
+void dibujar_marco(int WIDTH, int HEIGHT, int margen, int espacio_sup);
 //Metodo para dibujar la nave
 void dibujar_nave(float x, float y, float longitud, float anchura);
 //Metodo para dibujar enemigo

@@ -5,11 +5,17 @@
 #include <cmath>
 #include <ctime>
 
+#include <sstream>
+
+
 using namespace std;
 using namespace miniwin;
 
 const int WIDTH = 800;
-const int HEIGHT = 600;
+const int HEIGHT = 700;
+const int margen = 20;
+
+const int limite_margen = 40;
 
 const int ENEMY_UPDATE = 50;
 const int ENEMY_SPEED = 2;
@@ -20,6 +26,23 @@ const int SHIP_SIZE = 50;
 
 const int BULLET_SPEED = 10;
 const int BULLET_SIZE = 5;
+
+int puntaje = 0; 
+int vidas = 150;
+int contador_aumentar_vidas = 0;
+
+int enemigos_pasados = 0;
+
+
+template <typename T>
+class StringConverter {
+public:
+    static std::string to_string(T value) {
+        std::ostringstream ss;
+        ss << value;
+        return ss.str();
+    }
+};
 
 class Bala
 {
@@ -70,9 +93,10 @@ public:
     void mueve()
     {
         y += ENEMY_SPEED; // Mover hacia abajo
-        if (y > HEIGHT + tam)
+        if (y > HEIGHT - margen - tam)
         {                   // Suponiendo una altura de ventana de 600
             activo = false; // Desactivar si sale de la pantalla
+            enemigos_pasados++;
         }
     }
 
@@ -83,13 +107,22 @@ public:
             if (activo && abs(balas[i].get_x() - x) < tam && abs(balas[i].get_y() - y) < tam)
             {
                 activo = false;
+                puntaje += 20;
+                
+                if(puntaje % 100 == 0 && puntaje != 0){
+                	vidas += 100;
+                	contador_aumentar_vidas ++;
+				}
                 break;
             }
         }
     }
+    
 
     bool esta_activo() const { return activo; }
+    int get_x() const { return x; }
     int get_y() const { return y; }
+    int get_enemigos_pasados() const { return enemigos_pasados; }
 };
 
 class Nave
@@ -98,6 +131,7 @@ private:
     int x, y;
     int tam = SHIP_SIZE;
     vector<Bala> balas;
+    bool activo = true;
 
 public:
     Nave(int _x, int _y) : x(_x), y(_y) {}
@@ -117,8 +151,8 @@ public:
         // x += dx;
         // y += dy;
         // Limitar movimiento a la ventana
-        x = max(tam / 2, min(WIDTH - tam / 2, x + dx));
-        y = max(tam / 2, min(HEIGHT - tam / 2, y + dy));
+        x = max(tam / 2 + (limite_margen+10), min(WIDTH - tam / 2 - (limite_margen+10), x + dx));
+        y = max(tam / 2 + limite_margen, min(HEIGHT - tam / 2 - limite_margen, y + dy));
     }
 
     void dispara()
@@ -140,15 +174,32 @@ public:
             }
         }
     }
+    
+    void colision(const vector<Enemigo> &enemigos)
+   {
+    // Verificar colisión con cada enemigo que colisione
+    for (int i = 0; i < enemigos.size(); ++i)
+    {
+        if (abs(enemigos[i].get_x() - x) < tam && abs(enemigos[i].get_y() - y) < tam)
+        {
+            vidas--; // Reducir la vida en 1
+            break;
+        }
+    }
+
+   }
+
 
     const vector<Bala> &get_balas() const { return balas; }
 };
 
+
 int main()
 {
     srand(time(0)); // Inicializar semilla aleatoria
-    vredimensiona(WIDTH, HEIGHT);
-    Nave miNave(300, 550);
+    vredimensiona(WIDTH, HEIGHT); //Tamaño de la pantalla	  
+	
+    Nave miNave(300, HEIGHT - (limite_margen + 30));
     vector<Enemigo> enemigos;
 
     int contador = 0;
@@ -157,12 +208,36 @@ int main()
     {
         if (++contador % ENEMY_UPDATE == 0)
         {
-            enemigos.push_back(Enemigo(rand() % WIDTH, 0));
+            enemigos.push_back(Enemigo(limite_margen + rand() % (WIDTH - 2 * (limite_margen + 10)), 70));
         }
 
         borra();
+        dibujar_marco(WIDTH, HEIGHT, margen, 40);     
+        
         miNave.dibuja();
+
+        string puntaje_str = "Puntaje: " + StringConverter<int>::to_string(puntaje);
+        texto(margen, margen, puntaje_str);
+        
         miNave.actualizaBalas();
+        miNave.colision(enemigos); 
+        
+        string vidas_str = "Vidas: " + StringConverter<int>::to_string(vidas + contador_aumentar_vidas);
+        texto(margen + 120, margen, vidas_str);
+        
+        string masVidas_str = "Vidas Aumentadas: " + StringConverter<int>::to_string(contador_aumentar_vidas);
+        texto(margen + 240, margen, masVidas_str);
+        
+        if (vidas == 0) {
+        fin = true; 
+        break;
+    }
+    
+        if (enemigos_pasados >= 3) {
+                fin = true;
+                break;
+        }
+        
 
         for (vector<Enemigo>::iterator it = enemigos.begin(); it != enemigos.end();)
         {
@@ -178,6 +253,7 @@ int main()
                 it = enemigos.erase(it); // Eliminar enemigos inactivos
             }
         }
+        
 
         refresca();
 
@@ -199,6 +275,8 @@ int main()
         }
         espera(1);
     }
+    
+    mensaje("---------------¡GAME OVER!---------------"); 
 
     return 0;
 }
