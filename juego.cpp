@@ -28,7 +28,7 @@ const int BULLET_SPEED = 10;
 const int BULLET_SIZE = 5;
 
 int puntaje = 0; 
-int vidas = 150;
+int vidas = 30;
 int contador_aumentar_vidas = 0;
 
 int enemigos_pasados = 0;
@@ -228,16 +228,15 @@ int main()
         string masVidas_str = "Vidas Aumentadas: " + StringConverter<int>::to_string(contador_aumentar_vidas);
         texto(margen + 240, margen, masVidas_str);
         
-        if (vidas == 0) {
-        fin = true; 
-        break;
-    }
+       
     
-        if (enemigos_pasados >= 3) {
+        if (enemigos_pasados >= 3 || vidas == 0) {
                 fin = true;
-                break;
+                mensaje("---------------¡GAME OVER!---------------"); 
+        }else if (puntaje >= 200) {
+        	fin = true;
+        	mensaje("¡GANASTE!");
         }
-        
 
         for (vector<Enemigo>::iterator it = enemigos.begin(); it != enemigos.end();)
         {
@@ -276,7 +275,7 @@ int main()
         espera(1);
     }
     
-    mensaje("---------------¡GAME OVER!---------------"); 
+    
 
     return 0;
 }
